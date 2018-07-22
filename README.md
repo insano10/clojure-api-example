@@ -1,6 +1,8 @@
 Run with: 
-   lein run
+
+    lein run
 
 Or on the JVM with: 
-   lein uberjar 
-   java -jar target/api-example.jar
+
+    lein uberjar 
+    java -jar target/api-example.jar
