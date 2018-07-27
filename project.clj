@@ -3,8 +3,19 @@
   :description "Example REST API to learn some Clojure"
 
   :dependencies [
+                 [aero "1.1.2"]
+                 [cheshire "5.8.0"]
+                 [compojure "1.6.0"]
+                 [fipp "0.6.12"]
                  [integrant "0.6.3"]
+                 [medley "1.0.0"]
+                 [metosin/ring-http-response "0.9.0"]
                  [org.clojure/clojure "1.9.0"]
+                 [org.clojure/test.check "0.10.0-alpha2"]
+                 [org.clojure/tools.logging "0.4.0"]
+                 [ring/ring-core "1.6.3"]
+                 [ring/ring-jetty-adapter "1.6.3"]
+                 [ring/ring-json "0.4.0"]
                 ]
 
   :main api.core

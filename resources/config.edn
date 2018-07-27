@@ -1,0 +1,11 @@
+{:app {:name    "api-example"
+       :version "0.1-SNAPSHOT"
+       :project "api-example"}
+
+ :api.routes/app
+      {:api-version #ref [:app :version]}
+
+ :api.core/jetty
+      {:app   #ig/ref :api.routes/app
+       :port  3000
+       :join? false}}
