@@ -2,13 +2,24 @@
   (:gen-class)
   (:require [integrant.core :as ig]
             [clojure.tools.logging :as log]
-            [conman.core :as conman])
+            [conman.core :as conman]
+            [migratus.core :as migratus])
   (:import [com.opentable.db.postgres.embedded EmbeddedPostgres]))
 
-; todo: create a table for api on init
+
+(def migration-config {:store                :database
+                       :migration-dir        "dbmigrations/"
+                       :init-in-transaction? true
+                       :migration-table-name "migrations"})
 
 (defn- construct-db-url [host-name port database-name username password]
   (format "jdbc:postgresql://%s:%s/%s?user=%s&password=%s" host-name port database-name username password))
+
+(defn- run-migrations [{:keys [host-name port database-name username password]}]
+  (try
+    (migratus/migrate (assoc migration-config :db (construct-db-url host-name  port database-name username password)))
+    (catch Exception ex
+      (log/error ex "could not run db migrations"))))
 
 (defn- ->conn [{:keys [host-name port database-name username password max-pool-size]
                 :or   {max-pool-size 1}}]
@@ -34,7 +45,10 @@
   (.close db-server))
 
 (defmethod ig/init-key ::db [_ opts]
-  (->conn opts))
+  (log/debug "initialising db")
+  (run-migrations opts)
+  (->conn opts)
+  )
 
 (defmethod ig/halt-key! ::db [_ conn]
   (conman/disconnect! conn))

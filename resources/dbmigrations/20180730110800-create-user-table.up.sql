@@ -1,0 +1,1 @@
+CREATE TABLE users (id UUID, data JSONB NOT NULL);

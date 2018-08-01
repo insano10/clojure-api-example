@@ -12,6 +12,7 @@
                  [integrant "0.6.3"]
                  [medley "1.0.0"]
                  [metosin/ring-http-response "0.9.0"]
+                 [migratus "1.0.8"]
                  [org.clojure/clojure "1.9.0"]
                  [org.clojure/test.check "0.10.0-alpha2"]
                  [org.clojure/tools.logging "0.4.0"]

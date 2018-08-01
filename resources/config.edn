@@ -14,13 +14,17 @@
       {:port 4000}
 
  :api.db.core/db-server-shutdown
-      {:db #ig/ref :api.db.core/db-server}}
+      {:db #ig/ref :api.db.core/db-server}
 
  :api.db.core/db
-      {:host-name "localhost"
-       :port #ref [:api.db.core/db-server :port]
-       :database-name "users"
-       :username "user"
-       :password "password!"}
+      {:host-name     "localhost"
+       :port          #ref [:api.db.core/db-server :port]
+       :database-name "postgres"
+       :username      "postgres"
+       :password      "postgres"}
+
+ }
+
+
 
 
