@@ -32,9 +32,8 @@
       (log/error ex "could not connect to database"))))
 
 
-(defn insert-user [{:keys [user-id] :as db-record} db]
+(defn insert-user [db-record db]
   (j/with-db-transaction [tx db]
-                         (j/db-set-rollback-only! tx)
                          (queries/insert-user tx db-record true)))
 
 

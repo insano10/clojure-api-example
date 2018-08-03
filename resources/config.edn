@@ -3,7 +3,8 @@
        :project "api-example"}
 
  :api.routes/app
-      {:api-version #ref [:app :version]}
+      {:api-version #ref [:app :version]
+       :db #ig/ref :api.db.core/db}
 
  :api.core/jetty
       {:app   #ig/ref :api.routes/app

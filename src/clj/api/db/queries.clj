@@ -1,6 +1,7 @@
 (ns api.db.queries
   (:gen-class)
-  (:require [clojure.tools.logging :as log]
+  (:require [api.db.extend :refer :all]
+            [clojure.tools.logging :as log]
             [hugsql.core :as hugsql]))
 
 (hugsql/def-db-fns "queries.sql")
