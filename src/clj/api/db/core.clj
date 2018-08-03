@@ -1,6 +1,8 @@
 (ns api.db.core
   (:gen-class)
-  (:require [integrant.core :as ig]
+  (:require [api.db.queries :as queries]
+            [integrant.core :as ig]
+            [clojure.java.jdbc :as j]
             [clojure.tools.logging :as log]
             [conman.core :as conman]
             [migratus.core :as migratus])
@@ -17,7 +19,7 @@
 
 (defn- run-migrations [{:keys [host-name port database-name username password]}]
   (try
-    (migratus/migrate (assoc migration-config :db (construct-db-url host-name  port database-name username password)))
+    (migratus/migrate (assoc migration-config :db (construct-db-url host-name port database-name username password)))
     (catch Exception ex
       (log/error ex "could not run db migrations"))))
 
@@ -30,26 +32,30 @@
       (log/error ex "could not connect to database"))))
 
 
+(defn insert-user [{:keys [user-id] :as db-record} db]
+  (j/with-db-transaction [tx db]
+                         (j/db-set-rollback-only! tx)
+                         (queries/insert-user tx db-record true)))
 
 
-(defmethod ig/init-key ::db-server [_ {:keys [port]}]
-  (-> (EmbeddedPostgres/builder)
-      (.setPort port)
-      (.start)
-      ))
+  (defmethod ig/init-key ::db-server [_ {:keys [port]}]
+    (-> (EmbeddedPostgres/builder)
+        (.setPort port)
+        (.start)
+        ))
 
-(defmethod ig/init-key ::db-server-shutdown [_ _]
-  ())
+  (defmethod ig/init-key ::db-server-shutdown [_ _]
+    ())
 
-(defmethod ig/halt-key! ::db-server-shutdown [_ db-server]
-  (.close db-server))
+  (defmethod ig/halt-key! ::db-server-shutdown [_ db-server]
+    (.close db-server))
 
-(defmethod ig/init-key ::db [_ opts]
-  (log/debug "initialising db")
-  (run-migrations opts)
-  (->conn opts)
-  )
+  (defmethod ig/init-key ::db [_ opts]
+    (log/debug "initialising db")
+    (run-migrations opts)
+    (->conn opts)
+    )
 
-(defmethod ig/halt-key! ::db [_ conn]
-  (conman/disconnect! conn))
+  (defmethod ig/halt-key! ::db [_ conn]
+    (conman/disconnect! conn))
 

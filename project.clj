@@ -6,6 +6,7 @@
                  [aero "1.1.2"]
                  [cheshire "5.8.0"]
                  [compojure "1.6.0"]
+                 [com.layerware/hugsql "0.4.9"]
                  [com.opentable.components/otj-pg-embedded "0.12.0"]
                  [conman "0.8.2"]
                  [fipp "0.6.12"]
@@ -16,6 +17,7 @@
                  [org.clojure/clojure "1.9.0"]
                  [org.clojure/test.check "0.10.0-alpha2"]
                  [org.clojure/tools.logging "0.4.0"]
+                 [org.postgresql/postgresql "42.2.2"]
                  [org.slf4j/slf4j-log4j12 "1.7.1"]
                  [log4j/log4j "1.2.17" :exclusions [javax.mail/mail
                                                     javax.jms/jms
