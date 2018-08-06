@@ -16,12 +16,15 @@
 
       (GET "/500" [] (throw (Exception. "TEST!!! Here's your 500 hooman.")))
 
+      (GET "/users/:user-id" [user-id] (when-let [user (db.core/get-user user-id db)]
+                                         (resp/ok user)))
+
       (POST "/users" {:keys [body]} (let [user body
                                           user-id (:user-id body)]
-                                     (db.core/insert-user user db)
-                                     (resp/created (format "/users/%s" user-id)
-                                                   (json/generate-string user-id))))
-      (route/not-found "page not found"))))
+                                      (db.core/insert-user user db)
+                                      (resp/created (format "/users/%s" user-id)
+                                                    (json/generate-string user-id))))
+      (route/not-found "resource not found"))))
 
 (defn wrap-exception-logging
   [handler]

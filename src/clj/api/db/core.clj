@@ -36,6 +36,8 @@
   (j/with-db-transaction [tx db]
                          (queries/insert-user tx db-record true)))
 
+(defn get-user [user-id db]
+  (queries/get-user db user-id))
 
   (defmethod ig/init-key ::db-server [_ {:keys [port]}]
     (-> (EmbeddedPostgres/builder)

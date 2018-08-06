@@ -11,3 +11,7 @@
   (let [stored-id (sql-insert-user! conn {:id user-id :data data})]
     (if log?
       (log/info (str "Inserted user with id " stored-id)))))
+
+(defn get-user
+  [conn user-id]
+  (sql-get-user conn {:id user-id}))
