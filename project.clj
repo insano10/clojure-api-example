@@ -15,7 +15,7 @@
                  [metosin/ring-http-response "0.9.0"]
                  [migratus "1.0.8"]
                  [org.clojure/clojure "1.9.0"]
-                 [org.clojure/test.check "0.10.0-alpha2"]
+                 [org.clojure/test.check "0.10.0-alpha3"]
                  [org.clojure/tools.logging "0.4.0"]
                  [org.postgresql/postgresql "42.2.2"]
                  [org.slf4j/slf4j-log4j12 "1.7.1"]

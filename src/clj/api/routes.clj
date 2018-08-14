@@ -1,6 +1,8 @@
 (ns api.routes
   (:require [api.db.core :as db.core]
+            [api.specs.user :as user]
             [cheshire.core :as json]
+            [clojure.spec.alpha :as s]
             [clojure.tools.logging :as log]
             [compojure.core :refer [context GET POST DELETE PATCH routes]]
             [compojure.route :as route]
@@ -19,11 +21,15 @@
       (GET "/users/:user-id" [user-id] (when-let [user (db.core/get-user user-id db)]
                                          (resp/ok user)))
 
-      (POST "/users" {:keys [body]} (let [user body
-                                          user-id (:user-id body)]
-                                      (db.core/insert-user user db)
-                                      (resp/created (format "/users/%s" user-id)
-                                                    (json/generate-string user-id))))
+      (POST "/users" {:keys [body]} (cond
+                                      (not (s/valid? :api/user body))
+                                      (resp/bad-request (s/explain-str :api/user body))
+                                      :else
+                                      (let [user body user-id (:user-id body)]
+                                        (db.core/insert-user user db)
+                                        (resp/created (format "/users/%s" user-id)
+                                                      (json/generate-string user-id)))))
+
       (route/not-found "resource not found"))))
 
 (defn wrap-exception-logging
